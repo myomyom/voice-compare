@@ -26,8 +26,8 @@ export default function Search() {
     }
   }
 
-  console.log("FOOD A", foodA);
-  console.log("FOOD B", foodB);
+  // console.log("FOOD A", foodA);
+  // console.log("FOOD B", foodB);
 
   return (
     <>

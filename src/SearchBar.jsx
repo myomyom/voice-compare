@@ -24,7 +24,7 @@ function Input({ setNewTerm }) {
     >
       <TextField
         type="text"
-        value={term} // Fixed: Use local state for input
+        value={term}
         placeholder="Search..."
         onChange={handleChange}
       />
@@ -34,7 +34,7 @@ function Input({ setNewTerm }) {
 
 export default function SearchBar({ searchID, sendToParent }) {
   const [newTerm, setNewTerm] = useState("");
-  const [mediaID, setMediaID] = useState(null); // Initially set to null
+  const [mediaID, setMediaID] = useState(null);
   const [shouldLoad, setShouldLoad] = useState(false);
 
   useEffect(() => {
@@ -55,7 +55,7 @@ export default function SearchBar({ searchID, sendToParent }) {
       <Input setNewTerm={setNewTerm} />
       {shouldLoad ? (
         <>
-          <h1>SearchBar: {searchID}</h1>
+          {/* <h1>SearchBar: {searchID}</h1> */}
           <SearchResults
             value={newTerm}
             searchID={searchID}

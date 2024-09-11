@@ -97,7 +97,6 @@ export default function GetAnime({
     variables: { id: animeId, language: animeLanguage },
   });
   const vaMap = new Map();
-
   useEffect(() => {
     if (!loading && data) {
       const media = data.Media;
@@ -139,12 +138,4 @@ export default function GetAnime({
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error : {error.message}</p>;
-
-  return (
-    <>
-      <div>{searchID}</div>
-      <div>{animeId}</div>
-      <div>{vaMap}</div>
-    </>
-  );
 }

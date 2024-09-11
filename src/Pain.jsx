@@ -6,11 +6,7 @@ import GetAnime from "./GetAnime";
 export default function Pain({ mediaA, mediaB }) {
   const [vaMap1, setVAMap1] = useState(new Map());
   const [vaMap2, setVAMap2] = useState(new Map());
-  console.log("bread");
-
-  function handleDeezNuts(hihihi) {
-    console.log("deez nuts", hihihi);
-  }
+  // console.log("bread");
 
   function handleVAMap(searchID, m) {
     // console.log("m", m);
@@ -29,7 +25,7 @@ export default function Pain({ mediaA, mediaB }) {
   // console.log("vaMap1", vaMap1, "vaMap2", vaMap2);
   return (
     <>
-      <p>bread..</p>
+      {/* <p>bread..</p> */}
       {/* TODO: add option to change language */}
       <GetAnime
         searchID={1}
@@ -44,11 +40,7 @@ export default function Pain({ mediaA, mediaB }) {
         sendVAMap={handleVAMap}
       />
       {vaMap1.size > 0 && vaMap2.size > 0 ? (
-        <CompareAnime
-          mediaA={vaMap1}
-          mediaB={vaMap2}
-          deezNuts={handleDeezNuts}
-        />
+        <CompareAnime mediaA={vaMap1} mediaB={vaMap2} />
       ) : (
         <div>Both maps are empty, unable to compare.</div>
       )}

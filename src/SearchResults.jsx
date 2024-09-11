@@ -5,9 +5,9 @@ import {
   Avatar,
   Box,
   Button,
-  // Card,
-  // CardContent,
-  // CardMedia,
+  Card,
+  CardContent,
+  CardMedia,
   CircularProgress,
   Divider,
   List,
@@ -15,8 +15,9 @@ import {
   ListItemAvatar,
   ListItemButton,
   ListItemText,
-  // Typography,
+  Typography,
 } from "@mui/material";
+import Grid from "@mui/material/Grid2";
 
 const GET_ANIME_SEARCH = gql`
   query ($title: String) {
@@ -36,16 +37,16 @@ const GET_ANIME_SEARCH = gql`
   }
 `;
 
-// // function SelectedMedia({ img, title }) {
-// //   return (
-// //     <Card variant="outlined" sx={{ width: 150, my: 1 }}>
-// //       <CardMedia image={img} sx={{ height: 150 }} />
-// //       <CardContent>
-// //         <Typography>{title}</Typography>
-// //       </CardContent>
-// //     </Card>
-// //   );
-// // }
+function SelectedMedia({ img, title }) {
+  return (
+    <Card variant="outlined" sx={{ width: 150, marginTop: 5 }}>
+      <CardMedia image={img} sx={{ height: 150 }} />
+      <CardContent>
+        <Typography>{title}</Typography>
+      </CardContent>
+    </Card>
+  );
+}
 
 function ListItemLink({ primary, secondary, src, onClick }) {
   return (
@@ -71,8 +72,8 @@ export default function SearchResults({
   const [myId, setMyId] = useState(null);
   const [searchResultId, setSearchResultId] = useState(null);
   const [display, setDisplay] = useState("block");
-  //   const [thumbnail, setThumbnail] = useState("");
-  //   const [title, setTitle] = useState("");
+  const [thumbnail, setThumbnail] = useState("");
+  const [title, setTitle] = useState("");
   const { loading, error, data } = useQuery(GET_ANIME_SEARCH, {
     variables: { title: value },
   });
@@ -104,9 +105,9 @@ export default function SearchResults({
                 setMyId(v.id);
                 setSearchResultId(searchID);
                 sendMediaIDToParent(v.id);
-                // console.log("media ID: ", v.id);
-                // setThumbnail(v.coverImage.large);
-                // setTitle(v.title.english ? v.title.english : v.title.romaji);
+                console.log("media ID: ", v.id);
+                setThumbnail(v.coverImage.large);
+                setTitle(v.title.english ? v.title.english : v.title.romaji);
               }}
             />
           </ListItem>
@@ -122,7 +123,7 @@ export default function SearchResults({
             display === "block" ? setDisplay("none") : setDisplay("block")
           }
         >
-          close
+          {display === "none" ? "open" : "close"}
         </Button>
         <List
           sx={{
@@ -141,8 +142,15 @@ export default function SearchResults({
 
   return (
     <>
-      {/* <SelectedMedia title={title} img={thumbnail} /> */}
       {showMedia(data)}
+      <Grid
+        container
+        spacing={10}
+        sx={{ display: "flex", justifyContent: "center", width: 500 }}
+        // flexDirection="column"
+      >
+        <SelectedMedia title={title} img={thumbnail} />
+      </Grid>
       {/* <p>{myId}</p> */}
     </>
   );
