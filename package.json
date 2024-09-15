@@ -2,6 +2,7 @@
   "name": "voice-compare",
   "private": true,
   "version": "0.0.0",
+  "homepage": "https://myomyom.github.io/voice-compare/",
   "type": "module",
   "scripts": {
     "dev": "vite",
