@@ -2,16 +2,7 @@
 import { useEffect } from "react";
 import "./App.css";
 import { useQuery, gql } from "@apollo/client";
-// export default function GetAnime({ searchID, animeId, animeLanguage }) {
-//   return (
-//     <>
-//       <h3>test</h3>
-//       <h3>{searchID}</h3>
-//       <h3>{animeId}</h3>
-//       <h3>{animeLanguage}</h3>
-//     </>
-//   );
-// }
+import { Box, CircularProgress } from "@mui/material";
 
 // anilist API doesn't support cursor pagination so query 10 pages manually
 const GET_ANIME = gql`
@@ -24,36 +15,37 @@ const GET_ANIME = gql`
         native
       }
       coverImage {
+        medium
         large
       }
-      page1: characters(sort: ROLE, page: 1) {
+      page1: characters(page: 1) {
         ...comparisonFields
       }
-      page2: characters(sort: ROLE, page: 2) {
+      page2: characters(page: 2) {
         ...comparisonFields
       }
-      page3: characters(sort: ROLE, page: 3) {
+      page3: characters(page: 3) {
         ...comparisonFields
       }
-      page4: characters(sort: ROLE, page: 4) {
+      page4: characters(page: 4) {
         ...comparisonFields
       }
-      page5: characters(sort: ROLE, page: 5) {
+      page5: characters(page: 5) {
         ...comparisonFields
       }
-      page6: characters(sort: ROLE, page: 6) {
+      page6: characters(page: 6) {
         ...comparisonFields
       }
-      page7: characters(sort: ROLE, page: 7) {
+      page7: characters(page: 7) {
         ...comparisonFields
       }
-      page8: characters(sort: ROLE, page: 8) {
+      page8: characters(page: 8) {
         ...comparisonFields
       }
-      page9: characters(sort: ROLE, page: 9) {
+      page9: characters(page: 9) {
         ...comparisonFields
       }
-      page10: characters(sort: ROLE, page: 10) {
+      page10: characters(page: 10) {
         ...comparisonFields
       }
     }
@@ -100,16 +92,14 @@ export default function GetAnime({
   useEffect(() => {
     if (!loading && data) {
       const media = data.Media;
-      // setAnimeData(media);
+
       const mergedMedia = [];
+
       for (const x of Object.entries(media)) {
         if (x[0].startsWith("page")) {
           mergedMedia.push(...x[1].edges);
         }
       }
-
-      // console.log(mergedMedia[0].node.name.full);
-      // console.log(mergedMedia[0].voiceActors[0].name.full);
 
       const vaList = (o) => {
         o.forEach((m) => {
@@ -133,9 +123,25 @@ export default function GetAnime({
       vaList(mergedMedia);
       sendVAMap(searchID, vaMap);
       // console.log("VA MAP", searchID, vaMap);
+      return () => {
+        vaMap.length = 0;
+      };
     }
   }, [loading, data]);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading)
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          height: 250,
+          width: "auto",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+
   if (error) return <p>Error : {error.message}</p>;
 }

@@ -1,57 +1,63 @@
 /* eslint-disable react/prop-types */
-import { Card, CardContent, CardMedia, Typography } from "@mui/material";
+import {
+  Container,
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
+} from "@mui/material";
 import Grid from "@mui/material/Grid2";
 
 export default function CompareAnime({ mediaA, mediaB }) {
-  const intersect = new Array();
+  let intersect = new Array();
 
-  const uwu = (mA, mB) => {
-    for (const [k, v] of mA) {
-      // console.log("k", k);
-      // console.log("v", v);
-      if (mB.has(k)) {
-        if (v.length <= 3) {
-          mB.forEach((a) => (a[0][0] === k ? v.push(a[1]) : null));
-          [v[0], v[1]] = [v[1], v[0]];
-        }
-        // console.log(v);
-        // v.reverse();
-        intersect.push(v);
-        // console.log("k", k);
+  for (const [k, v] of mediaA) {
+    if (mediaB.has(k)) {
+      if (v.length < 3) {
+        mediaB.forEach((a) => (a[0][0] === k ? v.push(a[1]) : null));
+        [v[0], v[1]] = [v[1], v[0]];
       }
+      intersect.push(v);
     }
-  };
-  uwu(mediaA, mediaB);
+  }
 
   const hihi = () => {
     return (
       <>
-        {/* <Grid sx={{ width: 300 }}>{title(mediaA)}</Grid> */}
         {intersect.map((person, index) => (
           <Grid
             key={index}
             container
-            spacing={12}
-            sx={{ display: "flex", justifyContent: "center" }}
-            // flexDirection="column"
+            spacing={8}
+            display="flex"
+            justifyContent="center"
           >
             {person.map((details, index2) => (
-              <Card key={index2} variant="outlined" sx={{ width: 150, my: 1 }}>
-                <CardMedia sx={{ height: 150 }} image={details[2]} />
+              <Card key={index2} variant="outlined" sx={{ width: 130, my: 1 }}>
+                <CardMedia
+                  sx={{ height: 150 }}
+                  image={details[2]}
+                  component="img"
+                />
                 <CardContent>
-                  <Typography>{details[1]}</Typography>
+                  <Typography sx={{ fontSize: 14 }}>{details[1]}</Typography>
                 </CardContent>
               </Card>
             ))}
           </Grid>
         ))}
-        {/* <Grid sx={{ width: 300 }}>{title(mediaB)}</Grid> */}
       </>
     );
   };
   return (
     <>
-      <h1>{hihi()}</h1>
+      <Container sx={{ my: 5 }}>
+        {intersect.length === 0 ? (
+          <Typography>No shared VAs here!</Typography>
+        ) : (
+          hihi()
+        )}
+      </Container>
     </>
   );
 }

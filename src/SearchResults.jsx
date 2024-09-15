@@ -1,13 +1,11 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useQuery, gql } from "@apollo/client";
 import {
   Avatar,
   Box,
   Button,
-  Card,
-  CardContent,
-  CardMedia,
   CircularProgress,
   Divider,
   List,
@@ -15,9 +13,7 @@ import {
   ListItemAvatar,
   ListItemButton,
   ListItemText,
-  Typography,
 } from "@mui/material";
-import Grid from "@mui/material/Grid2";
 
 const GET_ANIME_SEARCH = gql`
   query ($title: String) {
@@ -36,17 +32,6 @@ const GET_ANIME_SEARCH = gql`
     }
   }
 `;
-
-function SelectedMedia({ img, title }) {
-  return (
-    <Card variant="outlined" sx={{ width: 150, marginTop: 5 }}>
-      <CardMedia image={img} sx={{ height: 150 }} />
-      <CardContent>
-        <Typography>{title}</Typography>
-      </CardContent>
-    </Card>
-  );
-}
 
 function ListItemLink({ primary, secondary, src, onClick }) {
   return (
@@ -67,16 +52,22 @@ export default function SearchResults({
   value,
   searchID,
   sendMediaIDToParent,
+  sendTitleImage,
 }) {
-  // eslint-disable-next-line no-unused-vars
   const [myId, setMyId] = useState(null);
   const [searchResultId, setSearchResultId] = useState(null);
-  const [display, setDisplay] = useState("block");
   const [thumbnail, setThumbnail] = useState("");
   const [title, setTitle] = useState("");
+
   const { loading, error, data } = useQuery(GET_ANIME_SEARCH, {
     variables: { title: value },
   });
+
+  useEffect(() => {
+    sendTitleImage([title, thumbnail]);
+    sendMediaIDToParent(myId);
+  }, [myId, title, thumbnail]);
+
   if (loading)
     return (
       <Box
@@ -92,22 +83,28 @@ export default function SearchResults({
     );
   if (error) return <p>Error : {error.message}</p>;
   const showMedia = ({ page: { media } }) => {
-    const title = (m) => {
-      return m.map((v) => (
-        <React.Fragment key={v.id}>
-          <ListItem sx={{ width: "50ch" }}>
+    const mediaList = [];
+    const titleList = (m) => {
+      m.map((v) =>
+        mediaList.push([
+          v.id,
+          v.title.english ? v.title.english : v.title.romaji,
+          v.coverImage.large ? v.coverImage.large : v.coverImage.medium,
+        ])
+      );
+      return mediaList.map((v) => (
+        <React.Fragment key={v[0]}>
+          <ListItem sx={{ width: "40ch" }}>
             <ListItemLink
-              primary={v.title.english ? v.title.english : v.title.romaji}
-              secondary={v.id}
-              src={v.coverImage.medium}
+              primary={v[1]}
+              secondary={v[0]}
+              src={v[2]}
               onClick={(e) => {
                 e.stopPropagation();
-                setMyId(v.id);
-                setSearchResultId(searchID);
-                sendMediaIDToParent(v.id);
-                console.log("media ID: ", v.id);
-                setThumbnail(v.coverImage.large);
-                setTitle(v.title.english ? v.title.english : v.title.romaji);
+                setMyId(v[0]);
+                setSearchResultId(searchID); // id of the searchbar. 1 = left 2 = right
+                setTitle(v[1]);
+                setThumbnail(v[2]);
               }}
             />
           </ListItem>
@@ -115,43 +112,22 @@ export default function SearchResults({
         </React.Fragment>
       ));
     };
-    // console.log("myId: ", myId);
+
     return (
       <>
-        <Button
-          onClick={() =>
-            display === "block" ? setDisplay("none") : setDisplay("block")
-          }
-        >
-          {display === "none" ? "open" : "close"}
-        </Button>
         <List
           sx={{
-            display: { display },
             width: "100%",
             maxHeight: 250,
             alignItems: "center",
             overflow: "auto",
           }}
         >
-          {title(media)}
+          {titleList(media)}
         </List>
       </>
     );
   };
 
-  return (
-    <>
-      {showMedia(data)}
-      <Grid
-        container
-        spacing={10}
-        sx={{ display: "flex", justifyContent: "center", width: 500 }}
-        // flexDirection="column"
-      >
-        <SelectedMedia title={title} img={thumbnail} />
-      </Grid>
-      {/* <p>{myId}</p> */}
-    </>
-  );
+  return <>{showMedia(data)}</>;
 }

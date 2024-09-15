@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import { Box, Stack, TextField } from "@mui/material";
 import SearchResults from "./SearchResults";
-import GetAnime from "./GetAnime";
 
 function Input({ setNewTerm }) {
   const [term, setTerm] = useState("");
@@ -19,60 +18,55 @@ function Input({ setNewTerm }) {
   return (
     <Box
       component="form"
-      sx={{ "& .MuiTextField-root": { m: 1, width: "50ch" } }}
+      sx={{ "& .MuiTextField-root": { m: 1, width: "40ch" } }}
       onSubmit={handleSubmit}
     >
       <TextField
         type="text"
         value={term}
-        placeholder="Search..."
+        placeholder="Search Anime Title..."
         onChange={handleChange}
       />
     </Box>
   );
 }
 
-export default function SearchBar({ searchID, sendToParent }) {
+export default function SearchBar({
+  searchID,
+  sendToParent,
+  sendTitleImageAgain,
+}) {
   const [newTerm, setNewTerm] = useState("");
   const [mediaID, setMediaID] = useState(null);
-  const [shouldLoad, setShouldLoad] = useState(false);
+  const [titleImage, setTitleImage] = useState([]);
 
   useEffect(() => {
-    if (newTerm) {
-      setShouldLoad(true);
-    } else {
-      setShouldLoad(false);
-    }
-  }, [newTerm]);
+    sendToParent(mediaID);
+    console.log(mediaID);
+    console.log(searchID);
+    sendTitleImageAgain(titleImage);
+  }, [mediaID, searchID]);
 
   function handleMediaID(mId) {
     setMediaID(mId);
-    sendToParent(mId);
+  }
+
+  function handleTitleImage(tId) {
+    console.log("titleImage", tId);
+    setTitleImage(tId);
+    // console.log(tId);
   }
 
   return (
-    <Stack>
+    <Stack sx={{ my: 1 }}>
       <Input setNewTerm={setNewTerm} />
-      {shouldLoad ? (
-        <>
-          {/* <h1>SearchBar: {searchID}</h1> */}
-          <SearchResults
-            value={newTerm}
-            searchID={searchID}
-            sendMediaIDToParent={handleMediaID}
-          />
-        </>
-      ) : (
-        <div>No search term entered.</div>
-      )}
-      {mediaID && (
-        <GetAnime
-          animeId={mediaID}
-          animeLanguage={"JAPANESE"}
-          searchID={searchID}
-          sendVAMap={() => {}}
-        />
-      )}
+      <SearchResults
+        value={newTerm}
+        display={newTerm ? "block" : "none"}
+        searchID={searchID}
+        sendMediaIDToParent={handleMediaID}
+        sendTitleImage={handleTitleImage}
+      />
     </Stack>
   );
 }
