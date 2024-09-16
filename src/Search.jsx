@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 
 import SearchBar from "./SearchBar";
-import { Card, CardContent, CardMedia, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { useState, useEffect } from "react";
 import Grid from "@mui/material/Grid2";
 
@@ -23,13 +23,7 @@ export default function Search() {
   function SelectedMedia({ title, image }) {
     return (
       <Grid sx={{ width: 200 }}>
-        {/* <Card variant="outlined" sx={{ width: 200, marginTop: 5 }}>
-          <CardMedia image={image} sx={{ height: 200 }} />
-          <CardContent>
-            <Typography>{title}</Typography>
-          </CardContent>
-        </Card> */}
-        <img src={image} style={{ height: 250, marginTop: "20%" }} />
+        <img src={image} style={{ width: 200, marginTop: "-5ch" }} />
         <Typography>{title}</Typography>
       </Grid>
     );
@@ -39,13 +33,12 @@ export default function Search() {
     switch (searchID) {
       case 1:
         setTitleImage1(m);
-
         break;
       case 2:
         setTitleImage2(m);
         break;
       default:
-        console.log("huhu");
+        console.log("error, wrong searchID");
         break;
     }
   }

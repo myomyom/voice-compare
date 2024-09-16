@@ -17,7 +17,7 @@ export default function GetAndCompareContainer({ mediaA, mediaB }) {
         setVAMap2(new Map(m));
         break;
       default:
-        console.log("hihi");
+        console.log("error, wrong searchID");
         break;
     }
   }
@@ -40,7 +40,7 @@ export default function GetAndCompareContainer({ mediaA, mediaB }) {
       {vaMap1.size > 0 && vaMap2.size > 0 ? (
         <CompareAnime mediaA={vaMap1} mediaB={vaMap2} />
       ) : (
-        <Typography variant="h6">
+        <Typography variant="h6" sx={{ my: 5 }}>
           Either one of both anime have no actors listed on Anilist.
         </Typography>
       )}

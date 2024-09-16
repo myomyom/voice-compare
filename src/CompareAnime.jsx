@@ -53,7 +53,9 @@ export default function CompareAnime({ mediaA, mediaB }) {
     <>
       <Container sx={{ my: 5 }}>
         {intersect.length === 0 ? (
-          <Typography>No shared VAs here!</Typography>
+          <Typography variant="h6" sx={{ my: 2 }}>
+            No shared VAs here!
+          </Typography>
         ) : (
           hihi()
         )}

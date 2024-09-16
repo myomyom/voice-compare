@@ -137,6 +137,7 @@ export default function GetAnime({
           justifyContent: "center",
           height: 250,
           width: "auto",
+          my: 5,
         }}
       >
         <CircularProgress />

@@ -24,7 +24,7 @@ function Input({ setNewTerm }) {
       <TextField
         type="text"
         value={term}
-        placeholder="Search Anime Title..."
+        placeholder="Search Anime..."
         onChange={handleChange}
       />
     </Box>
@@ -42,8 +42,6 @@ export default function SearchBar({
 
   useEffect(() => {
     sendToParent(mediaID);
-    console.log(mediaID);
-    console.log(searchID);
     sendTitleImageAgain(titleImage);
   }, [mediaID, searchID]);
 
@@ -52,13 +50,11 @@ export default function SearchBar({
   }
 
   function handleTitleImage(tId) {
-    console.log("titleImage", tId);
     setTitleImage(tId);
-    // console.log(tId);
   }
 
   return (
-    <Stack sx={{ my: 1 }}>
+    <Stack sx={{ marginTop: 2 }}>
       <Input setNewTerm={setNewTerm} />
       <SearchResults
         value={newTerm}

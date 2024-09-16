@@ -76,6 +76,7 @@ export default function SearchResults({
           justifyContent: "center",
           height: 250,
           width: "auto",
+          my: 2,
         }}
       >
         <CircularProgress />
