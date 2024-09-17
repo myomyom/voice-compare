@@ -28,19 +28,25 @@ export default function CompareAnime({ mediaA, mediaB }) {
           <Grid
             key={index}
             container
-            spacing={8}
+            spacing={{ xs: 0, md: 2, lg: 4, xl: 8 }}
             display="flex"
             justifyContent="center"
           >
             {person.map((details, index2) => (
-              <Card key={index2} variant="outlined" sx={{ width: 130, my: 1 }}>
+              <Card
+                key={index2}
+                variant="outlined"
+                sx={{ width: { xs: 75, sm: 120, md: 130, xl: 180 }, my: 1 }}
+              >
                 <CardMedia
-                  sx={{ height: 150 }}
+                  sx={{ height: { xs: 100, sm: 150, xl: 200 } }}
                   image={details[2]}
                   component="img"
                 />
                 <CardContent>
-                  <Typography sx={{ fontSize: 14 }}>{details[1]}</Typography>
+                  <Typography sx={{ fontSize: { xs: 10, sm: 14, xl: 18 } }}>
+                    {details[1]}
+                  </Typography>
                 </CardContent>
               </Card>
             ))}
@@ -51,7 +57,11 @@ export default function CompareAnime({ mediaA, mediaB }) {
   };
   return (
     <>
-      <Container sx={{ my: 5 }}>
+      <Container
+        sx={{
+          my: { xs: 2, md: 5 },
+        }}
+      >
         {intersect.length === 0 ? (
           <Typography variant="h6" sx={{ my: 2 }}>
             No shared VAs here!

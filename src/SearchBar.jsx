@@ -18,7 +18,12 @@ function Input({ setNewTerm }) {
   return (
     <Box
       component="form"
-      sx={{ "& .MuiTextField-root": { m: 1, width: "40ch" } }}
+      sx={{
+        "& .MuiTextField-root": {
+          mx: 1,
+          width: { xs: "15ch", sm: "30ch", md: "35ch", lg: "40ch", xl: "50ch" },
+        },
+      }}
       onSubmit={handleSubmit}
     >
       <TextField

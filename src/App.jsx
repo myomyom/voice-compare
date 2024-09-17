@@ -24,6 +24,15 @@ const theme = createTheme({
     h2: {
       fontWeight: 700,
     },
+    // breakpoints: {
+    //   values: {
+    //     xs: 0,
+    //     sm: 700,
+    //     md: 900,
+    //     lg: 1100,
+    //     xl: 1300,
+    //   },
+    // },
   },
 });
 
@@ -31,8 +40,16 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <Stack alignItems={"center"} spacing={1}>
-        <Typography variant="h2">Voice Compare</Typography>
-        <Typography variant="h6">
+        <Typography
+          variant="h2"
+          sx={{ fontSize: { xs: "2em", sm: "3em", md: "4em" } }}
+        >
+          Voice Compare
+        </Typography>
+        <Typography
+          variant="h6"
+          sx={{ fontSize: { xs: "0.8em", sm: "1em", md: "1.5em" } }}
+        >
           Compare voice actors in anime! Uses{" "}
           <a
             href="https://anilist.gitbook.io/anilist-apiv2-docs"
