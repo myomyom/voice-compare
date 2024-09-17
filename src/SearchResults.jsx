@@ -5,7 +5,6 @@ import { useQuery, gql } from "@apollo/client";
 import {
   Avatar,
   Box,
-  Button,
   CircularProgress,
   Divider,
   List,
@@ -33,17 +32,28 @@ const GET_ANIME_SEARCH = gql`
   }
 `;
 
-function ListItemLink({ primary, secondary, src, onClick }) {
+function ListItemLink({ primary, src, onClick }) {
   return (
     <ListItemButton onClick={onClick}>
       <ListItemAvatar>
         <Avatar
           src={src}
           variant="square"
-          sx={{ width: 100, height: "auto", marginRight: "1em" }}
+          sx={{
+            width: { xs: 50, sm: 50, md: 75, lg: 100, xl: 120 },
+            height: "auto",
+            // height: { xs: 25, sm: 50, md: 75, lg: 100 },
+            marginRight: "1em",
+          }}
         />
       </ListItemAvatar>
-      <ListItemText primary={primary} secondary={secondary} onClick={onClick} />
+      <ListItemText
+        primary={primary}
+        onClick={onClick}
+        primaryTypographyProps={{
+          fontSize: { xs: 12, sm: 15, xl: 18 },
+        }}
+      />
     </ListItemButton>
   );
 }
@@ -95,10 +105,9 @@ export default function SearchResults({
       );
       return mediaList.map((v) => (
         <React.Fragment key={v[0]}>
-          <ListItem sx={{ width: "40ch" }}>
+          <ListItem>
             <ListItemLink
               primary={v[1]}
-              secondary={v[0]}
               src={v[2]}
               onClick={(e) => {
                 e.stopPropagation();
@@ -118,8 +127,14 @@ export default function SearchResults({
       <>
         <List
           sx={{
-            width: "100%",
-            maxHeight: 250,
+            width: {
+              xs: "24ch",
+              sm: "30ch",
+              md: "35ch",
+              lg: "40ch",
+              xl: "50ch",
+            },
+            maxHeight: { xs: 125, md: 250 },
             alignItems: "center",
             overflow: "auto",
           }}

@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 
 import SearchBar from "./SearchBar";
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
 import Grid from "@mui/material/Grid2";
 
@@ -21,10 +21,25 @@ export default function Search() {
   }, [containerID1, containerID2]);
 
   function SelectedMedia({ title, image }) {
+    // @ 908 px witdh, change breakpoint from md to sm pls huhuhuhuu
     return (
-      <Grid sx={{ width: 200 }}>
-        <img src={image} style={{ width: 200, marginTop: "-5ch" }} />
-        <Typography>{title}</Typography>
+      <Grid sx={{ display: { xs: "none", sm: "block" } }}>
+        <Box
+          component="img"
+          src={image}
+          sx={{
+            width: { xs: 125, md: 145, lg: 175, xl: 250 },
+          }}
+        />
+        <Typography
+          sx={{
+            width: { xs: 125, md: 145, lg: 175, xl: 250 },
+            fontSize: { xs: 14, md: 16, xl: 22 },
+            my: 1,
+          }}
+        >
+          {title}
+        </Typography>
       </Grid>
     );
   }
@@ -55,27 +70,39 @@ export default function Search() {
   return (
     <>
       <Grid container spacing={1} sx={{ justifyContent: "center" }}>
-        <Grid sx={{ position: "fixed", left: "5%" }}>
+        <Grid
+          sx={{
+            position: "fixed",
+            left: { sm: "2em", lg: "5em", xl: "10em" },
+            top: { sm: "40%" },
+          }}
+          lg={2}
+        >
           <SelectedMedia
             title={titleImage1[0] ? titleImage1[0] : ""}
             image={titleImage1[1]}
           />
         </Grid>
-        <Grid>
+        <Grid sx={{ display: "flex" }}>
           <SearchBar
             searchID={1}
             sendToParent={(id) => idForContainer(1, id)}
             sendTitleImageAgain={(i) => handleTitleImage(1, i)}
           />
-        </Grid>
-        <Grid>
           <SearchBar
             searchID={2}
             sendToParent={(id) => idForContainer(2, id)}
             sendTitleImageAgain={(i) => handleTitleImage(2, i)}
           />
         </Grid>
-        <Grid sx={{ position: "fixed", right: "5%" }}>
+        <Grid
+          sx={{
+            position: "fixed",
+            right: { sm: "2em", lg: "5em", xl: "10em" },
+            top: { sm: "40%" },
+          }}
+          lg={2}
+        >
           <SelectedMedia
             title={titleImage2[0] ? titleImage2[0] : ""}
             image={titleImage2[1]}
