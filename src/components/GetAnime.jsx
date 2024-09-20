@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
 import { useEffect } from "react";
-import "./App.css";
 import { useQuery, gql } from "@apollo/client";
 import { Box, CircularProgress } from "@mui/material";
 
@@ -135,7 +134,7 @@ export default function GetAnime({
         sx={{
           display: "flex",
           justifyContent: "center",
-          height: 250,
+          height: "auto",
           width: "auto",
           my: 5,
         }}

@@ -28,7 +28,7 @@ export default function CompareAnime({ mediaA, mediaB }) {
           <Grid
             key={index}
             container
-            spacing={{ xs: 0, md: 2, lg: 4, xl: 8 }}
+            spacing={{ xs: 1, md: 2, lg: 4, xl: 8 }}
             display="flex"
             justifyContent="center"
           >
@@ -43,8 +43,12 @@ export default function CompareAnime({ mediaA, mediaB }) {
                   image={details[2]}
                   component="img"
                 />
-                <CardContent>
-                  <Typography sx={{ fontSize: { xs: 10, sm: 14, xl: 18 } }}>
+                <CardContent sx={{ px: { xs: "0", sm: 1 } }}>
+                  <Typography
+                    sx={{
+                      fontSize: { xs: 8, sm: 14, xl: 18 },
+                    }}
+                  >
                     {details[1]}
                   </Typography>
                 </CardContent>
@@ -59,15 +63,15 @@ export default function CompareAnime({ mediaA, mediaB }) {
     <>
       <Container
         sx={{
-          my: { xs: 2, md: 5 },
+          my: { xs: 1, md: 5 },
         }}
       >
-        {intersect.length === 0 ? (
+        {intersect.length !== 0 ? (
+          hihi()
+        ) : (
           <Typography variant="h6" sx={{ my: 2 }}>
             No shared VAs here!
           </Typography>
-        ) : (
-          hihi()
         )}
       </Container>
     </>

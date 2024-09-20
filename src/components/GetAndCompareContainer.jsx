@@ -23,7 +23,7 @@ export default function GetAndCompareContainer({ mediaA, mediaB }) {
   }
 
   return (
-    <Container>
+    <Container sx={{ width: { xs: "40ch", sm: "auto" } }}>
       {/* TODO: add option to change language */}
       <GetAnime
         searchID={1}

@@ -2,17 +2,8 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from "react";
 import { useQuery, gql } from "@apollo/client";
-import {
-  Avatar,
-  Box,
-  CircularProgress,
-  Divider,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemButton,
-  ListItemText,
-} from "@mui/material";
+import { Box, CircularProgress, Divider, List, ListItem } from "@mui/material";
+import ListItemLink from "./ListItemLink";
 
 const GET_ANIME_SEARCH = gql`
   query ($title: String) {
@@ -32,32 +23,6 @@ const GET_ANIME_SEARCH = gql`
   }
 `;
 
-function ListItemLink({ primary, src, onClick }) {
-  return (
-    <ListItemButton onClick={onClick}>
-      <ListItemAvatar>
-        <Avatar
-          src={src}
-          variant="square"
-          sx={{
-            width: { xs: 50, sm: 50, md: 75, lg: 100, xl: 120 },
-            height: "auto",
-            // height: { xs: 25, sm: 50, md: 75, lg: 100 },
-            marginRight: "1em",
-          }}
-        />
-      </ListItemAvatar>
-      <ListItemText
-        primary={primary}
-        onClick={onClick}
-        primaryTypographyProps={{
-          fontSize: { xs: 12, sm: 15, xl: 18 },
-        }}
-      />
-    </ListItemButton>
-  );
-}
-
 export default function SearchResults({
   value,
   searchID,
@@ -68,6 +33,7 @@ export default function SearchResults({
   const [searchResultId, setSearchResultId] = useState(null);
   const [thumbnail, setThumbnail] = useState("");
   const [title, setTitle] = useState("");
+  const [selectedIndex, setSelectedIndex] = useState(1);
 
   const { loading, error, data } = useQuery(GET_ANIME_SEARCH, {
     variables: { title: value },
@@ -84,7 +50,7 @@ export default function SearchResults({
         sx={{
           display: "flex",
           justifyContent: "center",
-          height: 250,
+          height: { xs: 125, md: 250 },
           width: "auto",
           my: 2,
         }}
@@ -103,7 +69,7 @@ export default function SearchResults({
           v.coverImage.large ? v.coverImage.large : v.coverImage.medium,
         ])
       );
-      return mediaList.map((v) => (
+      return mediaList.map((v, index) => (
         <React.Fragment key={v[0]}>
           <ListItem>
             <ListItemLink
@@ -111,6 +77,7 @@ export default function SearchResults({
               src={v[2]}
               onClick={(e) => {
                 e.stopPropagation();
+                setSelectedIndex(index);
                 setMyId(v[0]);
                 setSearchResultId(searchID); // id of the searchbar. 1 = left 2 = right
                 setTitle(v[1]);
@@ -128,7 +95,7 @@ export default function SearchResults({
         <List
           sx={{
             width: {
-              xs: "24ch",
+              xs: "18ch",
               sm: "30ch",
               md: "35ch",
               lg: "40ch",
