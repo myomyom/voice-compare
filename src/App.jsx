@@ -1,7 +1,7 @@
-import { Button, Stack, Typography } from "@mui/material";
+import { Button, Stack } from "@mui/material";
 import "./App.css";
-import Search from "./Search";
-// import { Container } from "@mui/material";
+import Search from "./components/Search";
+import TopBar from "./components/TopBar";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 const theme = createTheme({
   palette: {
@@ -24,15 +24,18 @@ const theme = createTheme({
     h2: {
       fontWeight: 700,
     },
-    // breakpoints: {
-    //   values: {
-    //     xs: 0,
-    //     sm: 700,
-    //     md: 900,
-    //     lg: 1100,
-    //     xl: 1300,
-    //   },
-    // },
+  },
+  breakpoints: {
+    values: {
+      xxs: 0,
+      xs: 300,
+      sm: 600,
+      md: 750,
+      ml: 900,
+      lg: 1200,
+      xl: 1500,
+      xxl: 1800,
+    },
   },
 });
 
@@ -40,24 +43,7 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <Stack alignItems={"center"} spacing={1}>
-        <Typography
-          variant="h2"
-          sx={{ fontSize: { xs: "2em", sm: "3em", md: "4em" } }}
-        >
-          Voice Compare
-        </Typography>
-        <Typography
-          variant="h6"
-          sx={{ fontSize: { xs: "0.8em", sm: "1em", md: "1.5em" } }}
-        >
-          Compare voice actors in anime! Uses{" "}
-          <a
-            href="https://anilist.gitbook.io/anilist-apiv2-docs"
-            style={{ textDecoration: "none", color: "#f50057" }}
-          >
-            Anilist API.
-          </a>
-        </Typography>
+        <TopBar />
         <Search />
         <Button
           secondary

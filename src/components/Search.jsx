@@ -1,11 +1,9 @@
 /* eslint-disable react/prop-types */
-
-import SearchBar from "./SearchBar";
-import { Box, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
+import SearchBar from "./SearchBar";
 import Grid from "@mui/material/Grid2";
-
 import GetAndCompareContainer from "./GetAndCompareContainer";
+import SelectedMedia from "./SelectedMedia";
 
 export default function Search() {
   const [containerID1, setContainerID1] = useState(null);
@@ -19,30 +17,6 @@ export default function Search() {
       setShouldLoad(true);
     }
   }, [containerID1, containerID2]);
-
-  function SelectedMedia({ title, image }) {
-    // @ 908 px witdh, change breakpoint from md to sm pls huhuhuhuu
-    return (
-      <Grid sx={{ display: { xs: "none", sm: "block" } }}>
-        <Box
-          component="img"
-          src={image}
-          sx={{
-            width: { xs: 125, md: 145, lg: 175, xl: 250 },
-          }}
-        />
-        <Typography
-          sx={{
-            width: { xs: 125, md: 145, lg: 175, xl: 250 },
-            fontSize: { xs: 14, md: 16, xl: 22 },
-            my: 1,
-          }}
-        >
-          {title}
-        </Typography>
-      </Grid>
-    );
-  }
 
   function handleTitleImage(searchID, m) {
     switch (searchID) {
@@ -73,17 +47,21 @@ export default function Search() {
         <Grid
           sx={{
             position: "fixed",
-            left: { sm: "2em", lg: "5em", xl: "10em" },
-            top: { sm: "40%" },
+            left: { ml: "2em", lg: "3em", xl: "6em", xxl: "9em" },
+            top: { ml: "30%" },
           }}
-          lg={2}
         >
           <SelectedMedia
             title={titleImage1[0] ? titleImage1[0] : ""}
             image={titleImage1[1]}
           />
         </Grid>
-        <Grid sx={{ display: "flex" }}>
+        <Grid
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
           <SearchBar
             searchID={1}
             sendToParent={(id) => idForContainer(1, id)}
@@ -98,10 +76,9 @@ export default function Search() {
         <Grid
           sx={{
             position: "fixed",
-            right: { sm: "2em", lg: "5em", xl: "10em" },
-            top: { sm: "40%" },
+            right: { ml: "2em", lg: "3em", xl: "6em", xxl: "9em" },
+            top: { ml: "30%" },
           }}
-          lg={2}
         >
           <SelectedMedia
             title={titleImage2[0] ? titleImage2[0] : ""}
