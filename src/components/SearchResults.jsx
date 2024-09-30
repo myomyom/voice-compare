@@ -2,18 +2,8 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from "react";
 import { useQuery, gql } from "@apollo/client";
-import {
-  Avatar,
-  Box,
-  Button,
-  CircularProgress,
-  Divider,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemButton,
-  ListItemText,
-} from "@mui/material";
+import { Box, CircularProgress, Divider, List, ListItem } from "@mui/material";
+import ListItemLink from "./ListItemLink";
 
 const GET_ANIME_SEARCH = gql`
   query ($title: String) {
@@ -33,21 +23,6 @@ const GET_ANIME_SEARCH = gql`
   }
 `;
 
-function ListItemLink({ primary, secondary, src, onClick }) {
-  return (
-    <ListItemButton onClick={onClick}>
-      <ListItemAvatar>
-        <Avatar
-          src={src}
-          variant="square"
-          sx={{ width: 100, height: "auto", marginRight: "1em" }}
-        />
-      </ListItemAvatar>
-      <ListItemText primary={primary} secondary={secondary} onClick={onClick} />
-    </ListItemButton>
-  );
-}
-
 export default function SearchResults({
   value,
   searchID,
@@ -58,6 +33,7 @@ export default function SearchResults({
   const [searchResultId, setSearchResultId] = useState(null);
   const [thumbnail, setThumbnail] = useState("");
   const [title, setTitle] = useState("");
+  const [selectedIndex, setSelectedIndex] = useState(1);
 
   const { loading, error, data } = useQuery(GET_ANIME_SEARCH, {
     variables: { title: value },
@@ -74,7 +50,7 @@ export default function SearchResults({
         sx={{
           display: "flex",
           justifyContent: "center",
-          height: 250,
+          height: { xs: 125, md: 250 },
           width: "auto",
           my: 2,
         }}
@@ -93,15 +69,15 @@ export default function SearchResults({
           v.coverImage.large ? v.coverImage.large : v.coverImage.medium,
         ])
       );
-      return mediaList.map((v) => (
+      return mediaList.map((v, index) => (
         <React.Fragment key={v[0]}>
-          <ListItem sx={{ width: "40ch" }}>
+          <ListItem>
             <ListItemLink
               primary={v[1]}
-              secondary={v[0]}
               src={v[2]}
               onClick={(e) => {
                 e.stopPropagation();
+                setSelectedIndex(index);
                 setMyId(v[0]);
                 setSearchResultId(searchID); // id of the searchbar. 1 = left 2 = right
                 setTitle(v[1]);
@@ -118,8 +94,14 @@ export default function SearchResults({
       <>
         <List
           sx={{
-            width: "100%",
-            maxHeight: 250,
+            width: {
+              xs: "18ch",
+              sm: "30ch",
+              md: "35ch",
+              lg: "40ch",
+              xl: "50ch",
+            },
+            maxHeight: { xs: 125, md: 250 },
             alignItems: "center",
             overflow: "auto",
           }}
