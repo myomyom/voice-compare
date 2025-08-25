@@ -5,6 +5,9 @@ import {
   Divider,
   List,
   Avatar,
+  ListItemAvatar,
+  ListItemButton,
+  ListItemText,
   TextField,
   Box,
   CircularProgress,
@@ -36,6 +39,9 @@ function LoadingBox() {
 }
 
 function SearchResults({ media }: { media: MediaThumbnail[] }) {
+  function handleClick(id: number) {
+    console.log("click!", id);
+  }
   return (
     <List
       sx={{
@@ -54,12 +60,31 @@ function SearchResults({ media }: { media: MediaThumbnail[] }) {
       {media.map((m) => (
         <div key={m.id}>
           <ListItem>
-            <Avatar
-              src={m.coverImage.medium}
-              variant="square"
-              sx={{ height: 100, width: 70, mr: 2 }}
-            />
-            {m.title.english ?? m.title.romaji}
+            <ListItemButton
+              onClick={(e) => {
+                e.stopPropagation();
+                handleClick(m.id)
+              }}
+            >
+              <ListItemAvatar>
+                <Avatar
+                  src={m.coverImage.medium}
+                  variant="square"
+                  sx={{
+                    width: { xs: 25, sm: 50, md: 75, lg: 100, xl: 120 },
+                    height: "auto",
+                    marginRight: { xs: 0, sm: 2 },
+                  }}
+                />
+              </ListItemAvatar>
+              <ListItemText
+                slotProps={{
+                  primary: { fontSize: { xs: 10, sm: 15, xl: 18 } },
+                }}
+              >
+                {m.title.english ?? m.title.romaji}
+              </ListItemText>
+            </ListItemButton>
           </ListItem>
           <Divider variant="inset" component="li" />
         </div>

@@ -1,5 +1,5 @@
 import SearchAnime from "./components/SearchAnime";
-import { Button, Stack } from "@mui/material";
+import { Button, Grid, Stack } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import TopBar from "./components/TopBar";
 const theme = createTheme({
@@ -42,12 +42,14 @@ export default function App() {
         <TopBar />
         <SearchAnime />
       </Stack>
-      <Button
-        href="https://github.com/myomyom/voice-compare"
-        sx={{ width: 100, marginTop: 2 }}
-      >
-        by myo 🐟
-      </Button>
+      <Grid container justifyContent="center">
+        <Button
+          href="https://github.com/myomyom/voice-compare"
+          sx={{ width: 100, marginTop: 2 }}
+        >
+          by myo 🐟
+        </Button>
+      </Grid>
     </ThemeProvider>
   );    
 }
