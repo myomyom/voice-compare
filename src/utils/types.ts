@@ -12,3 +12,14 @@ export type MediaThumbnail = {
     medium: string;
   };
 };
+
+export type Media = {
+  __typename: string;
+  id: number;
+  title: { english: string; romaji: string; native: string };
+  coverImage: {
+    large: string;
+    medium: string;
+  };
+  page: Page[];
+};
