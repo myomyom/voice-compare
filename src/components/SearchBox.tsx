@@ -41,13 +41,8 @@ export function LoadingBox() {
   );
 }
 
-type SearchResultsProps = {
-  media: MediaThumbnail[];
-  onSelect: (media: Media) => void;
-};
-export function SearchResults({ media, onSelect }: SearchResultsProps) {
-  const [loadQuery, { data }] = useLazyQuery(GET_ANIME);
-  const [res, setRes] = useState<Media>({
+const createNewMedia = () => {
+  return {
     __typename: "",
     id: 0,
     title: {
@@ -70,24 +65,19 @@ export function SearchResults({ media, onSelect }: SearchResultsProps) {
       },
       edges: [],
     },
-  });
+  };
+};
+
+type SearchResultsProps = {
+  media: MediaThumbnail[];
+  onSelect: (media: Media) => void;
+};
+export function SearchResults({ media, onSelect }: SearchResultsProps) {
+  const [loadQuery, { data }] = useLazyQuery(GET_ANIME);
+  const [res, setRes] = useState<Media>(createNewMedia());
   useEffect(() => {
     if (data) {
-      let m: Media = {
-        __typename: "Media",
-        id: 0,
-        title: {
-          __typename: "",
-          english: "",
-          romaji: "",
-          native: "",
-        },
-        coverImage: {
-          __typename: "",
-          large: "",
-          medium: "",
-        },
-      };
+      let m: Media = createNewMedia();
 
       m.id = data.Media.id;
       m.title = data.Media.title;
@@ -106,7 +96,6 @@ export function SearchResults({ media, onSelect }: SearchResultsProps) {
           };
         }
       }
-      console.log(m);
       setRes(m);
     }
   }, [data]);
@@ -114,7 +103,6 @@ export function SearchResults({ media, onSelect }: SearchResultsProps) {
   useEffect(() => {
     if (res) {
       onSelect(res);
-      // console.log("res",res)
     }
   }, [res, onSelect]);
 

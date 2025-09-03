@@ -48,7 +48,7 @@ export type CharacterEdge = {
   voiceActors: Staff[];
 };
 
-export type Character = {
+type Character = {
   __typename: string;
   id: number;
   name: {
@@ -59,6 +59,11 @@ export type Character = {
     __typename: string;
     large: string;
   };
+};
+
+export type Chara = {
+  character: Character;
+  vaIds: number[];
 };
 
 export type Staff = {
@@ -72,4 +77,11 @@ export type Staff = {
     __typename: string;
     large: string;
   };
+};
+
+export type VARoles = {
+  id: number;
+  name: string;
+  img: string;
+  characters: Character[];
 };
