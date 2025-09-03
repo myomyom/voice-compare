@@ -17,7 +17,11 @@ import {
   styled,
   type ButtonProps,
 } from "@mui/material";
-import type { MediaThumbnail } from "../utils/types";
+import type {
+  CharacterConnection,
+  Media,
+  MediaThumbnail,
+} from "../utils/types";
 import { useEffect, useState } from "react";
 import { Search } from "@mui/icons-material";
 
@@ -36,19 +40,90 @@ export function LoadingBox() {
     </Box>
   );
 }
-export function SearchResults({ media }: { media: MediaThumbnail[] }) {
+
+type SearchResultsProps = {
+  media: MediaThumbnail[];
+  onSelect: (media: Media) => void;
+};
+export function SearchResults({ media, onSelect }: SearchResultsProps) {
   const [loadQuery, { data }] = useLazyQuery(GET_ANIME);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [res, setRes] = useState({});
+  const [res, setRes] = useState<Media>({
+    __typename: "",
+    id: 0,
+    title: {
+      __typename: "",
+      english: "",
+      romaji: "",
+      native: "",
+    },
+    coverImage: {
+      __typename: "",
+      large: "",
+      medium: "",
+    },
+    page1: {
+      __typename: "",
+      pageInfo: {
+        __typename: "",
+        currentPage: 0,
+        hasNextPage: false,
+      },
+      edges: [],
+    },
+  });
   useEffect(() => {
     if (data) {
-      setRes(data.Media);
+      let m: Media = {
+        __typename: "Media",
+        id: 0,
+        title: {
+          __typename: "",
+          english: "",
+          romaji: "",
+          native: "",
+        },
+        coverImage: {
+          __typename: "",
+          large: "",
+          medium: "",
+        },
+      };
+
+      m.id = data.Media.id;
+      m.title = data.Media.title;
+      m.coverImage = data.Media.coverImage;
+      m.page1 = data.Media.page1;
+
+      for (const [key, value] of Object.entries(data.Media)) {
+        if (key.startsWith("page") && key !== "page1") {
+          const val = value as CharacterConnection;
+          m = {
+            ...m,
+            page1: {
+              ...m.page1,
+              edges: [...m.page1.edges, ...val.edges],
+            },
+          };
+        }
+      }
+      console.log(m);
+      setRes(m);
     }
   }, [data]);
 
+  useEffect(() => {
+    if (res) {
+      onSelect(res);
+      // console.log("res",res)
+    }
+  }, [res, onSelect]);
+
   function handleClick(id: number) {
-    loadQuery({ variables: { id: id } });
-    console.log(res)
+    try {
+      loadQuery({ variables: { id: id } });
+    } catch (error) {
+      console.error(error);
+    }
   }
   return (
     <List
@@ -101,13 +176,22 @@ export function SearchResults({ media }: { media: MediaThumbnail[] }) {
   );
 }
 
-export function SearchBox({ label }: { label: string }) {
+type SearchBoxProps = {
+  label: string;
+  onSelectMedia: (media: Media) => void;
+};
+
+export function SearchBox({ label, onSelectMedia }: SearchBoxProps) {
   const [value, setValue] = useState("");
 
   const [loadQuery, { called, loading, error, data }] =
     useLazyQuery(GET_ANIME_SEARCH);
 
   const mediaList: MediaThumbnail[] = data?.Page?.media ?? [];
+
+  const handleSelect = (media: Media) => {
+    onSelectMedia(media);
+  };
 
   return (
     <Box sx={{ my: 3 }}>
@@ -147,7 +231,9 @@ export function SearchBox({ label }: { label: string }) {
       </form>
       {error && <Typography color="error">Error! {error.message}</Typography>}
       {called && loading && <LoadingBox />}
-      {mediaList.length > 0 && <SearchResults media={mediaList} />}
+      {mediaList.length > 0 && (
+        <SearchResults media={mediaList} onSelect={handleSelect} />
+      )}
     </Box>
   );
 }
