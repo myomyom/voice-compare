@@ -48,7 +48,7 @@ export type CharacterEdge = {
   voiceActors: Staff[];
 };
 
-type Character = {
+export type Character = {
   __typename: string;
   id: number;
   name: {
@@ -81,7 +81,13 @@ export type Staff = {
 
 export type VARoles = {
   id: number;
-  name: string;
-  img: string;
-  characters: Character[];
+  // name: string;
+  // img: string;
+  staff: Staff,
+  characters1: Character[];
+  characters2: Character[];
 };
+
+// export interface VARolesCompare extends VARoles {
+//   characters2: Character[]
+// }

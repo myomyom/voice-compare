@@ -1,4 +1,5 @@
 import SearchAnime from "./components/SearchAnime";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Button, Grid, Stack } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import TopBar from "./components/TopBar";
@@ -38,7 +39,7 @@ const theme = createTheme({
 export default function App() {
   return (
     <ThemeProvider theme={theme}>
-      <Stack alignItems={"center"} spacing={1} height={"90vh"}>
+      <Stack alignItems={"center"} spacing={1}>
         <TopBar />
         <SearchAnime />
       </Stack>
