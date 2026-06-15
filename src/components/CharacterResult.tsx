@@ -1,11 +1,30 @@
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
-import { Card, CardMedia, CardContent, Typography, Box, Container, Grid, IconButton } from "@mui/material";
+import {
+  Card,
+  CardMedia,
+  CardContent,
+  Typography,
+  Box,
+  Grid,
+  IconButton,
+} from "@mui/material";
 import React from "react";
 import type { VARoles, Staff, Character } from "../utils/types";
 
 interface CharacterResultProps {
   comparisonResult: Map<number, VARoles> | null;
 }
+
+const chevronButtonSx = {
+  position: "absolute",
+  top: { xs: "45%", sm: "60%" },
+  p: { xs: 0.25, sm: 0.5 },
+  color: "common.black",
+  bgcolor: "#ffffffe6",
+  "&:hover": { bgcolor: "common.white" },
+  "&.Mui-disabled": { bgcolor: "#ffffff73" },
+  "& svg": { fontSize: { xs: 16, sm: 24 } },
+} as const;
 
 export default function CharacterResult({
   comparisonResult,
@@ -53,12 +72,9 @@ export default function CharacterResult({
           image={staff.image.large}
           component="img"
         />
-        <CardContent
-        
-        >
+        <CardContent>
           <Typography
             sx={{
-              fontSize: { xs: 8, sm: 15, xl: 18 },
               textAlign: "center",
             }}
           >
@@ -69,7 +85,11 @@ export default function CharacterResult({
     );
   };
 
-  const fillCardArray = (chara: Character[], prefix: string, rowKey: string) => {
+  const fillCardArray = (
+    chara: Character[],
+    prefix: string,
+    rowKey: string,
+  ) => {
     if (chara.length === 1) {
       return fillCard(chara[0], prefix);
     }
@@ -80,26 +100,24 @@ export default function CharacterResult({
     return (
       <Box
         sx={{
-          width: 250,
-          flexGrow: 1,
-          display: "flex",
-          alignItems: "center",
+          position: "relative",
+          width: { xs: 75, sm: 150 },
         }}
       >
+        {fillCard(chara[activeStep], `${prefix}-${activeStep}`)}
         <IconButton
           size="small"
           onClick={() => handleBack(rowKey)}
           disabled={activeStep === 0}
+          sx={{ ...chevronButtonSx, left: 3 }}
         >
           <KeyboardArrowLeft />
         </IconButton>
-        <Container>
-          {fillCard(chara[activeStep], `${prefix}-${activeStep}`)}
-        </Container>
         <IconButton
           size="small"
           onClick={() => handleNext(rowKey, maxSteps)}
           disabled={activeStep === maxSteps - 1}
+          sx={{ ...chevronButtonSx, right: 1 }}
         >
           <KeyboardArrowRight />
         </IconButton>

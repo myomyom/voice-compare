@@ -1,9 +1,9 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Grid, List, ListItem } from "@mui/material";
+import { Container, Grid } from "@mui/material";
 import { SearchBox, ColorButton } from "./SearchBox";
 import { useState } from "react";
 import type { CharacterConnection, Media, VARoles } from "../utils/types";
 import CharacterResult from "./CharacterResult";
+import SelectedMedia from "./SelectedMedia";
 
 const mapVARoles = (media: Media, order: number): Map<number, VARoles> => {
   const vaMap = new Map<number, VARoles>();
@@ -73,32 +73,44 @@ export default function SearchAnime() {
   };
 
   return (
-    <>
+    <Grid
+      container
+      sx={{
+        justifyContent: "center",
+        alignItems: "flex-start",
+        flexWrap: "nowrap",
+        gap: { ml: 2, xl: 4, xxl: 6 },
+      }}
+    >
+      <SelectedMedia media={media1} />
       <Grid
-        spacing={{ xs: 1, sm: 2 }}
-        container
-        sx={{ justifyContent: "center" }}
-      >
-        <SearchBox label="Search Anime 1..." onSelectMedia={setMedia1} />
-        <SearchBox label="Search Anime 2..." onSelectMedia={setMedia2} />
-      </Grid>
-      <ColorButton
-        variant="contained"
         sx={{
-          width: "15em",
-          height: "3rem",
-          fontSize: "20px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}
-        disableElevation
-        onClick={handleCompare}
       >
-        Compare
-      </ColorButton>
-      <List>
-        <ListItem>{media1?.title.english || media1?.title.romaji}</ListItem>{" "}
-        <ListItem>{media2?.title.english || media2?.title.romaji}</ListItem>
-      </List>
-      <CharacterResult comparisonResult={comparisonResult} />
-    </>
+        <Grid sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
+          <SearchBox label="Search Anime 1..." onSelectMedia={setMedia1} />
+          <SearchBox label="Search Anime 2..." onSelectMedia={setMedia2} />
+        </Grid>
+        <ColorButton
+          variant="contained"
+          sx={{
+            width: "15em",
+            height: "3rem",
+            fontSize: "20px",
+          }}
+          disableElevation
+          onClick={handleCompare}
+        >
+          Compare
+        </ColorButton>
+        <Container sx={{ padding: "2em" }}>
+          <CharacterResult comparisonResult={comparisonResult} />
+        </Container>
+      </Grid>
+      <SelectedMedia media={media2} />
+    </Grid>
   );
 }

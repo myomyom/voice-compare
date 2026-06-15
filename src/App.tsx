@@ -3,6 +3,13 @@ import SearchAnime from "./components/SearchAnime";
 import { Button, Grid, Stack } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import TopBar from "./components/TopBar";
+
+declare module "@mui/material/styles" {
+  interface BreakpointOverrides {
+    ml: true;
+    xxl: true;
+  }
+}
 const theme = createTheme({
   palette: {
     mode: "light",
@@ -30,8 +37,10 @@ const theme = createTheme({
       xs: 300,
       sm: 600,
       md: 750,
+      ml: 900,
       lg: 1200,
       xl: 1500,
+      xxl: 1920,
     },
   },
 });

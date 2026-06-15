@@ -75,6 +75,7 @@ type SearchResultsProps = {
 export function SearchResults({ media, onSelect }: SearchResultsProps) {
   const [loadQuery, { data }] = useLazyQuery(GET_ANIME);
   const [res, setRes] = useState<Media>(createNewMedia());
+  const [selectedId, setSelectedId] = useState<number | null>(null);
   useEffect(() => {
     if (data) {
       let m: Media = createNewMedia();
@@ -108,6 +109,7 @@ export function SearchResults({ media, onSelect }: SearchResultsProps) {
 
   function handleClick(id: number) {
     try {
+      setSelectedId(id);
       loadQuery({ variables: { id: id } });
     } catch (error) {
       console.error(error);
@@ -121,7 +123,6 @@ export function SearchResults({ media, onSelect }: SearchResultsProps) {
           sm: "30ch",
           md: "35ch",
           lg: "40ch",
-          xl: "50ch",
         },
         maxHeight: { xs: 125, md: 250 },
         alignItems: "center",
@@ -132,9 +133,14 @@ export function SearchResults({ media, onSelect }: SearchResultsProps) {
         <div key={m.id}>
           <ListItem>
             <ListItemButton
+              selected={m.id === selectedId}
               onClick={(e) => {
                 e.stopPropagation();
                 handleClick(m.id);
+              }}
+              sx={{
+                "&.Mui-selected": { bgcolor: "#f500572e" },
+                "&.Mui-selected:hover": { bgcolor: "#f500572e" },
               }}
             >
               <ListItemAvatar>
@@ -142,7 +148,7 @@ export function SearchResults({ media, onSelect }: SearchResultsProps) {
                   src={m.coverImage.medium}
                   variant="square"
                   sx={{
-                    width: { xs: 25, sm: 50, md: 75, lg: 100, xl: 120 },
+                    width: 50,
                     height: "auto",
                     marginRight: { xs: 0, sm: 2 },
                   }}
@@ -150,10 +156,10 @@ export function SearchResults({ media, onSelect }: SearchResultsProps) {
               </ListItemAvatar>
               <ListItemText
                 slotProps={{
-                  primary: { fontSize: { xs: 10, sm: 15, xl: 18 } },
+                  primary: { fontSize: 16 },
                 }}
               >
-                {m.title.english ?? m.title.romaji}
+                {m.title.english ?? m.title.romaji ?? m.title.native}
               </ListItemText>
             </ListItemButton>
           </ListItem>
@@ -203,7 +209,6 @@ export function SearchBox({ label, onSelectMedia }: SearchBoxProps) {
               sm: "30ch",
               md: "35ch",
               lg: "40ch",
-              xl: "50ch",
             },
           }}
           slotProps={{
