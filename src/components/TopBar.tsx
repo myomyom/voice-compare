@@ -1,11 +1,11 @@
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 export default function TopBar() {
   return (
-    <>
+    <Box paddingTop={"1em"}>
       <Typography
         variant="h2"
-        sx={{ fontSize: { xs: "2em", sm: "3em", md: "4em" } }}
+        sx={{ fontSize: { xs: "2em", sm: "3em", md: "4em" }, textAlign: "center"}}
       >
         Voice Compare
       </Typography>
@@ -21,6 +21,6 @@ export default function TopBar() {
           Anilist API.
         </a>
       </Typography>
-    </>
+    </Box>
   );
 }

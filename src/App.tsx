@@ -1,8 +1,15 @@
-import { Button, Stack } from "@mui/material";
-import "./App.css";
-import Search from "./components/Search";
-import TopBar from "./components/TopBar";
+import SearchAnime from "./components/SearchAnime";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Button, Grid, Stack } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import TopBar from "./components/TopBar";
+
+declare module "@mui/material/styles" {
+  interface BreakpointOverrides {
+    ml: true;
+    xxl: true;
+  }
+}
 const theme = createTheme({
   palette: {
     mode: "light",
@@ -27,14 +34,13 @@ const theme = createTheme({
   },
   breakpoints: {
     values: {
-      xxs: 0,
       xs: 300,
       sm: 600,
       md: 750,
       ml: 900,
       lg: 1200,
       xl: 1500,
-      xxl: 1800,
+      xxl: 1920,
     },
   },
 });
@@ -44,15 +50,16 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <Stack alignItems={"center"} spacing={1}>
         <TopBar />
-        <Search />
+        <SearchAnime />
+      </Stack>
+      <Grid container justifyContent="center">
         <Button
-          secondary
           href="https://github.com/myomyom/voice-compare"
-          sx={{ width: 100 }}
+          sx={{ width: 100, marginTop: 2 }}
         >
           by myo 🐟
         </Button>
-      </Stack>
+      </Grid>
     </ThemeProvider>
-  );
+  );    
 }
