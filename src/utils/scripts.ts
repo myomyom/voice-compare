@@ -19,14 +19,16 @@ export const GET_ANIME_SEARCH = gql`
   }
 `;
 
-export const GET_ANIME = gql`
-  query ($id: Int) {
+export const GET_ANIME = (language: string) => {
+  const voiceActorsArg = language ? `(language: ${language})` : "";
+  return gql`query ($id: Int) {
     Media(id: $id, type: ANIME) {
       id
       title {
         romaji
         english
         native
+        userPreferred
       }
       coverImage {
         medium
@@ -78,17 +80,37 @@ export const GET_ANIME = gql`
         id
         name {
           full
+          native
         }
       }
-      voiceActors(language: JAPANESE) {
+      voiceActors${voiceActorsArg} {
         id
         name {
           full
+          native
         }
         image {
           large
         }
       }
     }
-  }
-`;
+  }`;
+};
+
+export const TITLE_LANGUAGE = ["Romaji", "English", "Native"];
+
+export const DEFAULT_TITLE_LANGUAGE = "English";
+export const DEFAULT_VOICE_LANGUAGE = "Japanese";
+
+export const VOICE_LANGUAGE = [
+  "Japanese",
+  "English",
+  "Korean",
+  "Italian",
+  "Spanish",
+  "Portuguese",
+  "French",
+  "German",
+  "Hebrew",
+  "Hungarian",
+];

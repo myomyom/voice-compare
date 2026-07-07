@@ -34,7 +34,12 @@ const mapVARoles = (media: Media, order: number): Map<number, VARoles> => {
   return vaMap;
 };
 
-export default function SearchAnime() {
+type SearchAnimeProps = {
+  titleLanguage: string;
+  voiceLanguage: string;
+};
+
+export default function SearchAnime({titleLanguage, voiceLanguage}: SearchAnimeProps) {
   const [media1, setMedia1] = useState<Media | null>(null);
   const [media2, setMedia2] = useState<Media | null>(null);
   const [comparisonResult, setComparisonResult] = useState<Map<
@@ -91,8 +96,18 @@ export default function SearchAnime() {
         }}
       >
         <Grid sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
-          <SearchBox label="Search Anime 1..." onSelectMedia={setMedia1} />
-          <SearchBox label="Search Anime 2..." onSelectMedia={setMedia2} />
+          <SearchBox
+            label="Search Anime 1..."
+            onSelectMedia={setMedia1}
+            titleLanguage={titleLanguage}
+            voiceLanguage={voiceLanguage}
+          />
+          <SearchBox
+            label="Search Anime 2..."
+            onSelectMedia={setMedia2}
+            titleLanguage={titleLanguage}
+            voiceLanguage={voiceLanguage}
+          />
         </Grid>
         <ColorButton
           variant="contained"
@@ -107,7 +122,10 @@ export default function SearchAnime() {
           Compare
         </ColorButton>
         <Container sx={{ padding: "2em" }}>
-          <CharacterResult comparisonResult={comparisonResult} />
+          <CharacterResult
+            comparisonResult={comparisonResult}
+            titleLanguage={titleLanguage}
+          />
         </Container>
       </Grid>
       <SelectedMedia media={media2} />
