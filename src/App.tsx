@@ -1,5 +1,4 @@
 import SearchAnime from "./components/SearchAnime";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Button, Grid, Stack } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import TopBar from "./components/TopBar";
@@ -56,8 +55,9 @@ export default function App() {
         <Button
           href="https://github.com/myomyom/voice-compare"
           sx={{ width: 100, marginTop: 2 }}
+          style={{ position: "absolute", bottom: 0, paddingBottom: 25}}
         >
-          by myo 🐟
+          🐟
         </Button>
       </Grid>
     </ThemeProvider>
