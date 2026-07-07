@@ -50,12 +50,14 @@ const createNewMedia = () => {
       english: "",
       romaji: "",
       native: "",
+      userPreferred: "",
     },
     coverImage: {
       __typename: "",
       large: "",
       medium: "",
     },
+    countryOfOrigin: "",
     page1: {
       __typename: "",
       pageInfo: {
@@ -71,11 +73,30 @@ const createNewMedia = () => {
 type SearchResultsProps = {
   media: MediaThumbnail[];
   onSelect: (media: Media) => void;
+  titleLanguage: string;
+  voiceLanguage: string;
 };
-export function SearchResults({ media, onSelect }: SearchResultsProps) {
-  const [loadQuery, { data }] = useLazyQuery(GET_ANIME);
+export function SearchResults({
+  media,
+  onSelect,
+  titleLanguage,
+  voiceLanguage,
+}: SearchResultsProps) {
+  const [loadQuery, { data }] = useLazyQuery(GET_ANIME(voiceLanguage));
   const [res, setRes] = useState<Media>(createNewMedia());
   const [selectedId, setSelectedId] = useState<number | null>(null);
+  const mediaTitle = (m: MediaThumbnail) => {
+    switch (titleLanguage) {
+      case "Romaji":
+        return m.title.romaji;
+      case "English":
+        return m.title.english;
+      case "Native":
+        return m.title.native;
+      default:
+        return m.title.userPreferred;
+    }
+  };
   useEffect(() => {
     if (data) {
       let m: Media = createNewMedia();
@@ -159,7 +180,7 @@ export function SearchResults({ media, onSelect }: SearchResultsProps) {
                   primary: { fontSize: 16 },
                 }}
               >
-                {m.title.english ?? m.title.romaji ?? m.title.native}
+                {mediaTitle(m)}
               </ListItemText>
             </ListItemButton>
           </ListItem>
@@ -173,9 +194,16 @@ export function SearchResults({ media, onSelect }: SearchResultsProps) {
 type SearchBoxProps = {
   label: string;
   onSelectMedia: (media: Media) => void;
+  titleLanguage: string;
+  voiceLanguage: string;
 };
 
-export function SearchBox({ label, onSelectMedia }: SearchBoxProps) {
+export function SearchBox({
+  label,
+  onSelectMedia,
+  titleLanguage,
+  voiceLanguage,
+}: SearchBoxProps) {
   const [value, setValue] = useState("");
 
   const [loadQuery, { called, loading, error, data }] =
@@ -225,7 +253,12 @@ export function SearchBox({ label, onSelectMedia }: SearchBoxProps) {
       {error && <Typography color="error">Error! {error.message}</Typography>}
       {called && loading && <LoadingBox />}
       {mediaList.length > 0 && (
-        <SearchResults media={mediaList} onSelect={handleSelect} />
+        <SearchResults
+          media={mediaList}
+          onSelect={handleSelect}
+          titleLanguage={titleLanguage}
+          voiceLanguage={voiceLanguage.toUpperCase()}
+        />
       )}
     </Box>
   );

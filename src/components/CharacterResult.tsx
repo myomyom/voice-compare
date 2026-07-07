@@ -13,6 +13,7 @@ import type { VARoles, Staff, Character } from "../utils/types";
 
 interface CharacterResultProps {
   comparisonResult: Map<number, VARoles> | null;
+  titleLanguage: string;
 }
 
 const chevronButtonSx = {
@@ -28,6 +29,7 @@ const chevronButtonSx = {
 
 export default function CharacterResult({
   comparisonResult,
+  titleLanguage,
 }: CharacterResultProps) {
   const [activeSteps, setActiveSteps] = React.useState<Map<string, number>>(
     new Map(),
@@ -57,6 +59,11 @@ export default function CharacterResult({
     });
   };
 
+  const staffNameFormat = (staff: Staff) => {
+    if (titleLanguage === "Native") return staff.name.native;
+    else return staff.name.full;
+  };
+
   const fillCard = (staff: Staff | Character, prefix: string) => {
     return (
       <Card
@@ -76,9 +83,10 @@ export default function CharacterResult({
           <Typography
             sx={{
               textAlign: "center",
+              fontSize: "smaller"
             }}
           >
-            {staff.name.full}
+            {staffNameFormat(staff)}
           </Typography>
         </CardContent>
       </Card>
