@@ -1,5 +1,5 @@
 import SearchAnime from "./components/SearchAnime";
-import { Button, Grid, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import TopBar from "./components/TopBar";
 import LanguageMenu from "./components/LanguageMenu";
@@ -68,14 +68,6 @@ export default function App() {
         <TopBar />
         <SearchAnime titleLanguage={titleLanguage} voiceLanguage={voiceLanguage} />
       </Stack>
-      <Grid container justifyContent="center">
-        <Button
-          href="https://github.com/myomyom/voice-compare"
-          size="small"
-        >
-          🐟
-        </Button>
-      </Grid>
     </ThemeProvider>
   );
 }

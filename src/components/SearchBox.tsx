@@ -24,6 +24,7 @@ import type {
 } from "../utils/types";
 import { useEffect, useState } from "react";
 import { Search } from "@mui/icons-material";
+import { mediaTitle } from "../utils/formatter";
 
 export function LoadingBox() {
   return (
@@ -85,18 +86,7 @@ export function SearchResults({
   const [loadQuery, { data }] = useLazyQuery(GET_ANIME(voiceLanguage));
   const [res, setRes] = useState<Media>(createNewMedia());
   const [selectedId, setSelectedId] = useState<number | null>(null);
-  const mediaTitle = (m: MediaThumbnail) => {
-    switch (titleLanguage) {
-      case "Romaji":
-        return m.title.romaji;
-      case "English":
-        return m.title.english;
-      case "Native":
-        return m.title.native;
-      default:
-        return m.title.userPreferred;
-    }
-  };
+
   useEffect(() => {
     if (data) {
       let m: Media = createNewMedia();
@@ -180,7 +170,7 @@ export function SearchResults({
                   primary: { fontSize: 16 },
                 }}
               >
-                {mediaTitle(m)}
+                {mediaTitle(m, titleLanguage)}
               </ListItemText>
             </ListItemButton>
           </ListItem>

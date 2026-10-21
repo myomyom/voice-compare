@@ -14,6 +14,8 @@ import type { VARoles, Staff, Character } from "../utils/types";
 interface CharacterResultProps {
   comparisonResult: Map<number, VARoles> | null;
   titleLanguage: string;
+  idMedia1: number | undefined;
+  idMedia2: number | undefined;
 }
 
 const chevronButtonSx = {
@@ -30,6 +32,8 @@ const chevronButtonSx = {
 export default function CharacterResult({
   comparisonResult,
   titleLanguage,
+  idMedia1,
+  idMedia2,
 }: CharacterResultProps) {
   const [activeSteps, setActiveSteps] = React.useState<Map<string, number>>(
     new Map(),
@@ -83,7 +87,7 @@ export default function CharacterResult({
           <Typography
             sx={{
               textAlign: "center",
-              fontSize: "smaller"
+              fontSize: "smaller",
             }}
           >
             {staffNameFormat(staff)}
@@ -155,5 +159,26 @@ export default function CharacterResult({
     );
   }
 
+  if (
+    idMedia1 !== 0 &&
+    idMedia2 !== 0 &&
+    idMedia1 !== undefined &&
+    idMedia2 !== undefined
+  ) {
+    if (rows.length === 0)
+      return (
+        <>
+          <Typography
+            variant="h6"
+            sx={{
+              fontSize: { xs: "0.8em", sm: "1em", md: "1.5em" },
+              textAlign: "center",
+            }}
+          >
+            No results found
+          </Typography>
+        </>
+      );
+  }
   return <>{rows}</>;
 }

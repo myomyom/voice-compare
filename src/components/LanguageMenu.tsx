@@ -1,4 +1,6 @@
 import {
+  Button,
+  Grid,
   IconButton,
   Menu,
   MenuItem,
@@ -94,6 +96,11 @@ export default function LanguageMenu({
           onSelectOption={handleChangeVoiceLanguage}
           value={voiceLanguage}
         ></OptionMenu>
+        <Grid container justifyContent="center">
+          <Button href="https://github.com/myomyom/voice-compare" size="small">
+            🐟
+          </Button>
+        </Grid>
       </Menu>
     </>
   );
@@ -115,7 +122,9 @@ export function OptionMenu({
   return (
     <MenuItem>
       <Stack>
-        <Typography variant="caption" sx={{paddingBottom: "5px"}}>{label}</Typography>
+        <Typography variant="caption" sx={{ paddingBottom: "5px" }}>
+          {label}
+        </Typography>
         <Select
           label={label}
           onChange={onSelectOption}
