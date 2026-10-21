@@ -1,7 +1,8 @@
 import { Box, Grid, Typography } from "@mui/material";
 import type { Media } from "../utils/types";
+import { mediaTitle } from "../utils/formatter";
 
-export default function SelectedMedia({ media }: { media: Media | null }) {
+export default function SelectedMedia({ media, titleLanguage }: { media: Media | null, titleLanguage: string }) {
   if (!media?.coverImage.large) return null;
 
   return (
@@ -30,7 +31,7 @@ export default function SelectedMedia({ media }: { media: Media | null }) {
           marginTop: "0.5em",
         }}
       >
-        {media.title.english || media.title.romaji || media.title.native}
+        {mediaTitle(media, titleLanguage)}
       </Typography>
     </Grid>
   );

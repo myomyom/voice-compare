@@ -6,7 +6,12 @@ export type Page = {
 export type MediaThumbnail = {
   __typename: string;
   id: number;
-  title: { english: string; romaji: string; native: string };
+  title: {
+    english: string;
+    romaji: string;
+    native: string;
+    userPreferred: string;
+  };
   coverImage: {
     large: string;
     medium: string;
@@ -21,12 +26,14 @@ export type Media = {
     english: string;
     romaji: string;
     native: string;
+    userPreferred: string;
   };
   coverImage: {
     __typename: string;
     large: string;
     medium: string;
   };
+  countryOfOrigin: string;
   [key: `page${number}`]: CharacterConnection;
 };
 
@@ -54,6 +61,7 @@ export type Character = {
   name: {
     __typename: string;
     full: string;
+    native: string;
   };
   image: {
     __typename: string;
@@ -72,6 +80,7 @@ export type Staff = {
   name: {
     __typename: string;
     full: string;
+    native: string;
   };
   image: {
     __typename: string;
@@ -81,13 +90,7 @@ export type Staff = {
 
 export type VARoles = {
   id: number;
-  // name: string;
-  // img: string;
-  staff: Staff,
+  staff: Staff;
   characters1: Character[];
   characters2: Character[];
 };
-
-// export interface VARolesCompare extends VARoles {
-//   characters2: Character[]
-// }

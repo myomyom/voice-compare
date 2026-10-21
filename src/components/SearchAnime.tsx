@@ -1,6 +1,6 @@
 import { Container, Grid } from "@mui/material";
-import { SearchBox, ColorButton } from "./SearchBox";
-import { useState } from "react";
+import { SearchBox } from "./SearchBox";
+import { useEffect, useState } from "react";
 import type { CharacterConnection, Media, VARoles } from "../utils/types";
 import CharacterResult from "./CharacterResult";
 import SelectedMedia from "./SelectedMedia";
@@ -34,7 +34,40 @@ const mapVARoles = (media: Media, order: number): Map<number, VARoles> => {
   return vaMap;
 };
 
-export default function SearchAnime() {
+const compareMedia = (mediaA: Media, mediaB: Media): Map<number, VARoles> => {
+  const vaMap1 = mapVARoles(mediaA, 1);
+  const vaMap2 = mapVARoles(mediaB, 2);
+  vaMap2.forEach((value, key) => {
+    if (vaMap1.has(key)) {
+      const charas = vaMap1.get(key)?.characters1;
+      if (charas) value.characters1.push(...charas);
+      vaMap1.set(key, { ...vaMap1.get(key), ...value });
+    } else {
+      vaMap1.set(key, value);
+    }
+  });
+
+  const vaRes = new Map<number, VARoles>();
+  vaMap1.forEach((value, key) => {
+    if (
+      vaMap1.get(key)?.characters1.length !== 0 &&
+      vaMap1.get(key)?.characters2.length !== 0
+    ) {
+      vaRes.set(key, value);
+    }
+  });
+  return vaRes;
+};
+
+type SearchAnimeProps = {
+  titleLanguage: string;
+  voiceLanguage: string;
+};
+
+export default function SearchAnime({
+  titleLanguage,
+  voiceLanguage,
+}: SearchAnimeProps) {
   const [media1, setMedia1] = useState<Media | null>(null);
   const [media2, setMedia2] = useState<Media | null>(null);
   const [comparisonResult, setComparisonResult] = useState<Map<
@@ -42,35 +75,10 @@ export default function SearchAnime() {
     VARoles
   > | null>(null);
 
-  let vaMap1 = new Map<number, VARoles>();
-  let vaMap2 = new Map<number, VARoles>();
-  let vaRes = new Map(vaMap1);
-
-  const handleCompare = () => {
-    vaMap1 = mapVARoles(media1!, 1);
-    vaMap2 = mapVARoles(media2!, 2);
-    vaMap2.forEach((value, key) => {
-      if (vaMap1.has(key)) {
-        const charas = vaMap1.get(key)?.characters1;
-        if (charas) value.characters1.push(...charas);
-        vaMap1.set(key, { ...vaMap1.get(key), ...value });
-      } else {
-        vaMap1.set(key, value);
-      }
-    });
-
-    vaRes = new Map([]);
-    vaMap1.forEach((value, key) => {
-      if (
-        vaMap1.get(key)?.characters1.length !== 0 &&
-        vaMap1.get(key)?.characters2.length !== 0
-      ) {
-        vaRes.set(key, value);
-      }
-    });
-
-    setComparisonResult(vaRes);
-  };
+  useEffect(() => {
+    if (!media1 || !media2) return;
+    setComparisonResult(compareMedia(media1, media2));
+  }, [media1, media2]);
 
   return (
     <Grid
@@ -82,7 +90,7 @@ export default function SearchAnime() {
         gap: { ml: 2, xl: 4, xxl: 6 },
       }}
     >
-      <SelectedMedia media={media1} />
+      <SelectedMedia media={media1} titleLanguage={titleLanguage} />
       <Grid
         sx={{
           display: "flex",
@@ -91,26 +99,29 @@ export default function SearchAnime() {
         }}
       >
         <Grid sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
-          <SearchBox label="Search Anime 1..." onSelectMedia={setMedia1} />
-          <SearchBox label="Search Anime 2..." onSelectMedia={setMedia2} />
+          <SearchBox
+            label="Search Anime 1..."
+            onSelectMedia={setMedia1}
+            titleLanguage={titleLanguage}
+            voiceLanguage={voiceLanguage}
+          />
+          <SearchBox
+            label="Search Anime 2..."
+            onSelectMedia={setMedia2}
+            titleLanguage={titleLanguage}
+            voiceLanguage={voiceLanguage}
+          />
         </Grid>
-        <ColorButton
-          variant="contained"
-          sx={{
-            width: "15em",
-            height: "3rem",
-            fontSize: "20px",
-          }}
-          disableElevation
-          onClick={handleCompare}
-        >
-          Compare
-        </ColorButton>
         <Container sx={{ padding: "2em" }}>
-          <CharacterResult comparisonResult={comparisonResult} />
+          <CharacterResult
+            idMedia1={media1?.id}
+            idMedia2={media2?.id}
+            comparisonResult={comparisonResult}
+            titleLanguage={titleLanguage}
+          />
         </Container>
       </Grid>
-      <SelectedMedia media={media2} />
+      <SelectedMedia media={media2} titleLanguage={titleLanguage} />
     </Grid>
   );
 }
